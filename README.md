@@ -6,6 +6,8 @@ Fable Fleet is a small, file-based framework for running a *multi-model* AI codi
 
 > Extracted from a real, working setup. Beginner-friendly tutorial: **https://www.kelvinlee.io/blog/fable-fleet-multi-model-ai-orchestration**
 
+> 💡 **The big idea:** Fable 5 is a genuinely clever model — and right now it's cheap and fast to run. So instead of burning that intelligence writing every line itself, we borrow its brain to *run the loop*: it reads the task, works out which model is best for each piece, and routes the work. The cleverness is spent on **decisions, not on grinding out tokens** — a premium brain steering cheap hands. Intelligent model routing, for a fraction of the price.
+
 ## 💸 The point: spend fewer tokens, catch more bugs
 
 This whole design exists to **stop burning money on one big model doing everything**. Here's where the savings come from:
@@ -49,6 +51,23 @@ Templates for the plan, audit, and phase-report are in [`templates/`](templates/
 3. **Add the routing** so each model reads its role automatically — copy the snippets from [`routing/`](routing/) into your repo's `CLAUDE.md` (Claude) and `AGENTS.md` (Codex).
 4. **Authenticate the workers.** Claude + Codex run on your *subscriptions* (no API keys) — launch Claude with `env -u ANTHROPIC_API_KEY -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_BASE_URL claude` so it uses the subscription. GLM needs `ZAI_API_KEY`; Qwen needs `GROQ_API_KEY` (put both in your shell profile so worker terminals inherit them).
 5. **Launch the coordinator** (Fable 5) on the main worktree and brief it. That's the only terminal you talk to.
+
+## Running the fleet (every time)
+
+Once it's set up, starting a session is quick — the coordinator only takes charge when you *explicitly* ask it to, so day-to-day dev with the same models is unaffected.
+
+1. **Make sure Orca's runtime is up** (if you run it headless, restart the serve process; on the desktop app it's already running).
+2. **Open a terminal on your project's main worktree** in Orca.
+3. **Launch the coordinator** on your subscription:
+   ```bash
+   env -u ANTHROPIC_API_KEY -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_BASE_URL claude
+   ```
+   then `/model` → **Fable 5**. Your `ZAI_API_KEY` and `GROQ_API_KEY` live in your shell profile, so worker terminals inherit them automatically — nothing to re-enter.
+4. **Brief the coordinator.** Paste something like:
+   > Act as the fable-fleet coordinator (`orca/roles/coordinator.md`) and run a fleet phase for: **[your task]**. Write a plan with a Files-touched list and a runnable acceptance test per task, and gate it to me before dispatching anything.
+5. **Approve the plan** at the gate, let the workers and verifier run, and **read the verdict**. On `ship`, progress is saved to markdown — `/clear` and start the next phase.
+
+That's it. The magic phrase is step 4: naming the coordinator role is what turns a normal Fable session into the boss.
 
 ## Cost routing (don't drift)
 
