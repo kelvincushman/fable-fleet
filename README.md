@@ -56,6 +56,16 @@ Templates for the plan, audit, and phase-report are in [`templates/`](templates/
 
 Once it's set up, starting a session is quick — the coordinator only takes charge when you *explicitly* ask it to, so day-to-day dev with the same models is unaffected.
 
+**Fastest — use the skill.** This kit ships a Claude Code skill at [`.claude/skills/fable-fleet/`](.claude/skills/fable-fleet/SKILL.md). Copy it into your project's `.claude/skills/` (or `~/.claude/skills/` to have it in every project), then in a Fable 5 session just run:
+
+```
+/fable-fleet [your task]
+```
+
+It runs the pre-flight (kit check, runtime check, cost check) and then the plan → gate → dispatch → verify loop for you. It self-guards: in a project without the kit installed, it stops with a message instead of misfiring.
+
+**Or do it by hand:**
+
 1. **Make sure Orca's runtime is up** (if you run it headless, restart the serve process; on the desktop app it's already running).
 2. **Open a terminal on your project's main worktree** in Orca.
 3. **Launch the coordinator** on your subscription:
