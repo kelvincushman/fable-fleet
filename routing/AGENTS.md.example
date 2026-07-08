@@ -1,0 +1,19 @@
+<!--
+Add this block to your repo's AGENTS.md so Codex routes itself to its fleet
+role. Codex reads AGENTS.md automatically.
+-->
+
+## Orca Fleet Mode (fable-fleet) — Codex role routing
+
+This applies ONLY when you are dispatched as part of a fleet run.
+
+- **Main coder** — when a dispatch spec references `orca/roles/` or a plan under
+  `feature-research/`, you are the bulk implementer. Read
+  `orca/roles/codex-coder.md` and comply. The spec names the plan and the task
+  id.
+
+You implement your assigned task only, write your `audit-<task-id>.md`, and
+signal completion with `worker_done`. You never orchestrate, never expand
+scope, and never touch files outside your task's Files-touched list.
+
+If a dispatch spec names a role file, that file wins over this routing.

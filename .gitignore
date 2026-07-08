@@ -1,0 +1,18 @@
+# Fleet working state — generated per run, never committed
+feature-research/
+baseline.txt
+dispatch.txt
+
+# Worktrees
+wt-*/
+../wt-*
+
+# Node / tooling
+node_modules/
+.env
+.env.*
+*.log
+
+# OS / editor
+.DS_Store
+*.swp

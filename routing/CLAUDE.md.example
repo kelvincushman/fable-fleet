@@ -1,0 +1,24 @@
+<!--
+Add this block to your repo's CLAUDE.md so Claude Code instances route
+themselves to the right fleet role. Claude reads CLAUDE.md automatically.
+-->
+
+## Orca Fleet Mode (fable-fleet) — Claude role routing
+
+This routing applies ONLY when a session is part of a fleet run. **Normal
+interactive development sessions ignore this section entirely** — being Fable 5
+on the main worktree does NOT by itself make you the coordinator.
+
+- **Coordinator** — you are on the MAIN worktree, your model is Fable 5, AND
+  the user explicitly asked you to run/coordinate a fleet phase (or your prompt
+  references the coordinator role). Read `orca/roles/coordinator.md`. The
+  coordinator never edits code.
+- **Senior coder** — you are on a task worktree, your model is Opus 4.8, and
+  your dispatch spec references `orca/roles/` or a plan under
+  `feature-research/`. Read `orca/roles/opus-coder.md`. You never orchestrate.
+
+If a dispatch spec names a role file, that file wins over this routing.
+
+Token directive for fleet roles: minimize token usage — no file dumps in
+responses, no re-reading files already read this session, summaries over dumps.
+Progress lives in md files, never in chat scrollback.
